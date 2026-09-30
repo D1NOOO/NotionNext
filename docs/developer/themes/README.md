@@ -3,7 +3,7 @@
 中文 | [English](./README.en.md)
 
 本目录用于**开发者向**主题说明（架构、全局改动、迁移计划）及英文文档。  
-**站长向统一入口**：[user-guide/themes/README.md](../../user-guide/themes/README.md)（26 个主题各一篇 `<id>.md`）。
+**站长向统一入口**：[user-guide/themes/README.md](../../user-guide/themes/README.md)（每个主题各一篇 `<id>.md`）。
 
 ## 文档分工
 
@@ -23,6 +23,7 @@
 | Endspace | [endspace.md](../../user-guide/themes/endspace.md) | [ENDSPACE.md](./ENDSPACE.md) · [ENDSPACE.en.md](./ENDSPACE.en.md) |
 | Fuwari | [fuwari.md](../../user-guide/themes/fuwari.md) | [FUWARI.md](./FUWARI.md) |
 | ThoughtLite | [thoughtlite.md](../../user-guide/themes/thoughtlite.md) | [THOUGHTLITE.md](./THOUGHTLITE.md) · [THOUGHTLITE.en.md](./THOUGHTLITE.en.md) |
+| Ocean | [ocean.md](../../user-guide/themes/ocean.md) | 海洋引擎、配置与兼容性说明见站长文档 |
 
 全部主题列表：[THEMES_CATALOG.md](../../user-guide/themes/THEMES_CATALOG.md)
 

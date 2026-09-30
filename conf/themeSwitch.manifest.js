@@ -11,6 +11,46 @@
 
 /** @type {Record<string, { name?: string, summary?: string, cover?: string, coverWebp?: string, rootId?: string, tier?: 'free' | 'paid', settings?: Array<{ key: string, label: string, type: 'boolean' | 'text' | 'number' | 'select', defaultValue: string | number | boolean, options?: Array<{ label: string, value: string | number | boolean }> }>, palette?: Array<{ key: string, cssVar: string, label: string, defaultValue: string }> }>} */
 export const THEME_SWITCH_MANIFEST = {
+  ocean: {
+    name: 'Ocean',
+    summary: '从海面缓缓下潜的实时海洋，搭配安静的文章阅读空间。',
+    settings: [
+      {
+        key: 'OCEAN_JOURNAL_START',
+        label: '文章出现进度',
+        type: 'number',
+        defaultValue: 0.6
+      },
+      {
+        key: 'OCEAN_QUALITY',
+        label: '海洋画质',
+        type: 'select',
+        defaultValue: 'auto',
+        options: [
+          { label: '自动适应', value: 'auto' },
+          { label: '高画质', value: 'high' }
+        ]
+      },
+      {
+        key: 'OCEAN_ANIMATION_ENABLE',
+        label: '海洋动画',
+        type: 'boolean',
+        defaultValue: true
+      },
+      {
+        key: 'OCEAN_ANIMATION_SPEED',
+        label: '海浪速度',
+        type: 'number',
+        defaultValue: 0.5
+      },
+      {
+        key: 'OCEAN_HERO_TITLE',
+        label: '首页标题',
+        type: 'text',
+        defaultValue: 'Closer to\nthe ocean.'
+      }
+    ]
+  },
   endspace: {
     name: 'Endspace',
     summary: '轻工业终末风，侧栏导航、悬浮控件与加载动画。',
@@ -360,6 +400,7 @@ export const THEME_SWITCH_MANIFEST = {
 }
 
 const THEME_CONFIGS = {
+  ocean: oceanConfig,
   claude: claudeConfig,
   commerce: commerceConfig,
   endspace: endspaceConfig,
@@ -630,3 +671,4 @@ import starterConfig from '@/themes/starter/config'
 import thoughtliteConfig from '@/themes/thoughtlite/config'
 import typographyConfig from '@/themes/typography/config'
 import xuhomeConfig from '@/themes/xuhome/config'
+import oceanConfig from '@/themes/ocean/config'

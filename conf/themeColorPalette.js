@@ -17,6 +17,10 @@ const DEFAULT_DARK = {
 }
 
 const THEME_COLOR_DEFAULTS = {
+  ocean: {
+    PRIMARY: '#00213e', BG: '#edf5f6', CARD: '#ffffff', TEXT: '#05233d', TEXT_SECONDARY: '#527080', BORDER: '#cfdee3',
+    PRIMARY_DARK: '#b1dbe3', BG_DARK: '#071d2b', CARD_DARK: '#102c3c', TEXT_DARK: '#e4f2f4', TEXT_SECONDARY_DARK: '#9cbac5', BORDER_DARK: '#284958'
+  },
   commerce: { PRIMARY: '#D2232A', BG: '#f5f5f5' },
   endspace: {
     PRIMARY: '#FBFB45',

@@ -1,4 +1,4 @@
-# 内置主题全览（27 个）
+# 内置主题全览（28 个）
 
 > 与 `themes/` 目录及 `conf/themeSwitch.manifest.js` 同步 · 当前版本 **4.10.10**
 > 先按站点目标选主题，再进入单个主题文档看配置。
@@ -19,6 +19,7 @@
 | 导航站 / 资源聚合 | [nav](./nav.md) | [gitbook](./gitbook.md) | 更适合分类入口、链接集合和资源导航 |
 | 杂志感 / 强视觉首页 | [magzine](./magzine.md)、[heo](./heo.md) | [fuwari](./fuwari.md) | 首页表现力强，适合内容品牌化 |
 | 游戏 / 互动展示 | [game](./game.md) | [movie](./movie.md) | 适合特殊内容形态和沉浸式展示 |
+| 海洋 / 沉浸式博客 | [ocean](./ocean.md) | [photo](./photo.md) | 实时海洋下潜体验，继续滚动阅读 Notion 文章 |
 
 ## 新手怎么选？
 
@@ -88,6 +89,7 @@
 | `example` | Example | 主题开发骨架 | [example.md](./example.md) |
 | `thoughtlite` | ThoughtLite | 时间线首页 + Latest 卡片 | [thoughtlite.md](./thoughtlite.md) · [THOUGHTLITE.md](../../developer/themes/THOUGHTLITE.md) |
 | `xuhome` | XuHome | 新粗野主义卡片博客 + Hero 打字机 | [xuhome.md](./xuhome.md) |
+| `ocean` | Ocean | 实时海洋首页 + 文章阅读，支持静态回退 | [ocean.md](./ocean.md) |
 
 ## 主题切换挂件
 

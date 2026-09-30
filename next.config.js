@@ -194,6 +194,8 @@ function getOutput() {
 }
 
 const nextConfig = {
+  // Hide the local Next.js developer badge in the site preview.
+  devIndicators: false,
   eslint: {
     ignoreDuringBuilds: true
   },
