@@ -62,6 +62,8 @@ Cloudflare → **我的个人资料** → **API 令牌** → **创建令牌** �
 
 本仓库已包含 [`.github/workflows/deploy-docs-site.yml`](https://github.com/notionnext-org/NotionNext/blob/main/.github/workflows/deploy-docs-site.yml)：
 
+Fork 仓库默认跳过此工作流的部署任务，避免同步上游后因缺少 Cloudflare 凭据而失败。若需要部署自己的文档站，请先完成上述 Pages 项目和 Secrets 配置，再在仓库 **Settings → Secrets and variables → Actions → Variables** 中添加 `DOCS_SITE_DEPLOY_ENABLED=true`。
+
 - `push` 到 `main` 且变更 `docs/**`、`.vitepress/**` 等 → 自动 `yarn docs:site:build` 并部署  
 - 也可在 GitHub **Actions** 页手动 **Run workflow**
 
