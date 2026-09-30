@@ -36,8 +36,13 @@ import probeFragment from './probe.frag.glsl.js'
 import curvatureFragment from './curvature.frag.glsl.js'
 import surfaceFragment from './surface.frag.glsl.js'
 import waterlineFragment from './waterline.glsl.js'
+import {
+  DEFAULT_WAVE_TUNING,
+  normalizeWaveTuning,
+  readSavedWaveTuning
+} from '../waveTuning.js'
 
-export const TIME_SCALE = 0.5
+export const TIME_SCALE = DEFAULT_WAVE_TUNING.speed
 
 const vertex = `varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.,1.); }`
 
@@ -75,49 +80,42 @@ export async function createOceanRenderer(
   // 模拟时间相对真实时间的倍率。深水色散 ω=√(gk) 下，贴近镜头的细浪周期不到 1s，按真实速度播放显得急促；
   // 统一放慢时间（波浪、碎光、颗粒与界面漂动同步）而不改动频谱形状。?speed= 可覆盖，1 为物理实时。
   const speedParam = Number(params.get('speed'))
-  const timeScale =
+  let timeScale =
     params.has('speed') && Number.isFinite(speedParam) && speedParam >= 0
       ? speedParam
       : speed
+  const defaultTuning = normalizeWaveTuning({ speed: timeScale })
+  let tuning = normalizeWaveTuning(
+    params.get('ocean-tune') === '1' ? readSavedWaveTuning() : null,
+    defaultTuning
+  )
+  timeScale = tuning.speed
   // 天空贴图与着色器编译并行：先发起下载，等所有程序提交编译后再一起等待。
   const skyRequest = new TextureLoader().loadAsync(skyUrl)
   skyRequest.catch(() => {})
   const preciseStorage = renderer.extensions.has('OES_texture_float_linear')
   // 风向几乎正对镜头（波向 +Z），浪脊横贯画面；较窄的方向谱让涌浪成列而不是碎成面条。
-  // 细浪（rms 1.7cm、陡度 .38）与毛细层（4.2mm）是海面碎光与水下揉皱纹理之间的折中：再强则水下全反射斑块过大，再弱则海面发平发灰。
+  // 确认后的默认参数作为调参面板的恢复基准；浏览器保存的预览参数只影响本机。
   const simulation = createWaveSimulation(renderer, {
     storage: preciseStorage ? 'float' : 'half',
     windDirection: [-0.24, 0.97],
     long: {
       length: 64,
       resolution: 512,
-      rmsHeight: 0.11,
-      windSpeed: 4.5,
-      smallWaveDamping: 0.18,
-      choppiness: 1.1,
-      spreading: 3
+      ...tuning.long
     },
     detail: {
       length: 8,
       resolution: 256,
-      rmsHeight: 0.017,
-      maxWavelength: 1.15,
-      smallWaveDamping: 0.024,
-      windSpeed: 3.2,
-      choppiness: 0.38,
-      spreading: 2
+      ...tuning.detail
     },
-    ripple: {
-      rmsHeight: 0.0042,
-      maxWavelength: 0.25,
-      smallWaveDamping: 0.012,
-      spreading: 1
-    }
+    ripple: tuning.ripple
   })
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy()
   const uniforms = {
     uYaw: { value: 0 },
     uTime: { value: 12 },
+    uGlintSoftness: { value: tuning.glintSoftness },
     uProgress: { value: 0 },
     uResolution: { value: new Vector2(1, 1) },
     uCamera: { value: new Vector3(0, 0.62, 0) },
@@ -373,6 +371,7 @@ export async function createOceanRenderer(
     immersion: 0,
     cameraHeight: 0.62,
     parameters: simulation.parameters,
+    tuning,
     sunDirection: uniforms.uSunDirection.value.toArray(),
     errors: []
   }
@@ -596,6 +595,24 @@ export async function createOceanRenderer(
   frameHandle = requestAnimationFrame(animate)
   const api = {
     state,
+    defaultTuning,
+    setTuning(value) {
+      if (disposed) throw new Error('Cannot tune a disposed ocean renderer.')
+      const next = normalizeWaveTuning(value, tuning)
+      simulation.setParameters({
+        long: next.long,
+        detail: next.detail,
+        ripple: next.ripple
+      })
+      tuning = next
+      timeScale = next.speed
+      uniforms.uGlintSoftness.value = next.glintSoftness
+      state.tuning = next
+      state.parameters = simulation.parameters
+      // Invalidate the paused frame too; animate() submits at most one new frame.
+      previousTime = -1
+      return next
+    },
     setPaused(value) {
       paused = Boolean(value)
     },

@@ -41,7 +41,7 @@ export const THEME_SWITCH_MANIFEST = {
         key: 'OCEAN_ANIMATION_SPEED',
         label: '海浪速度',
         type: 'number',
-        defaultValue: 0.5
+        defaultValue: 0.45
       },
       {
         key: 'OCEAN_HERO_TITLE',

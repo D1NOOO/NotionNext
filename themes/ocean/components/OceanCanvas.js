@@ -79,6 +79,7 @@ export default function OceanCanvas({
         rendererRef.current = renderer
         window.__ocean = renderer
         renderer.setPaused(pausedRef.current)
+        window.dispatchEvent(new Event('ocean:renderer-ready'))
       })
       .catch(error => {
         if (!cancelled) callbacksRef.current.onError?.(error.message)

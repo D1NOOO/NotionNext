@@ -20,6 +20,7 @@ import CONFIG from './config'
 import { Style } from './style'
 
 const Comment = dynamic(() => import('@/components/Comment'), { ssr: false })
+const WaveTuner = dynamic(() => import('./components/WaveTuner'), { ssr: false })
 const AlgoliaSearchModal = dynamic(
   () => import('@/components/AlgoliaSearchModal'),
   { ssr: false }
@@ -63,6 +64,7 @@ const LayoutBase = props => {
         </button>
       </div>
       <AlgoliaSearchModal {...props} />
+      {router.query['ocean-tune'] === '1' && <WaveTuner />}
     </div>
   )
 }

@@ -6,27 +6,6 @@ import { useEffect, useState } from 'react'
 import CONFIG from '../config'
 import ReturnToList from './ReturnToList'
 
-export function OceanMark() {
-  return (
-    <svg
-      width='73'
-      height='30'
-      viewBox='0 0 73 30'
-      fill='none'
-      aria-hidden='true'
-    >
-      <path
-        d='M2 19c11 2 18-13 30-10 8 1 15 11 29 8C45 27 38 9 25 14 15 18 10 22 2 19Z'
-        fill='currentColor'
-      />
-      <path
-        d='M18 19c11-4 19 7 31 5 9-1 15-5 22-9-8 10-21 16-34 9-6-4-12-7-19-5Z'
-        fill='currentColor'
-      />
-    </svg>
-  )
-}
-
 function MenuLink({ item, closeMenu }) {
   const title = item.name || item.title
   if (item.subMenus?.length) {
@@ -121,10 +100,9 @@ export default function Header({ customNav, customMenu, post, scene = false }) {
       <SmartLink
         href='/'
         className='ocean-brand'
-        aria-label={`${siteConfig('TITLE')} · 首页`}
+        aria-label="Panda's Blog · 首页"
       >
-        <OceanMark />
-        <span>{siteConfig('TITLE') || 'OCEAN'}</span>
+        <span>{"Panda's Blog"}</span>
       </SmartLink>
       <nav className='ocean-desktop-nav' aria-label='主导航'>
         {links.map((item, index) => (

@@ -1,6 +1,7 @@
 // Original GLSL from ocean_page; exported as a string for Next.js.
 export default String.raw`varying vec2 vUv;
 uniform vec3 uFocus;
+uniform float uGlintSoftness;
 float lensContact=0.;
 
 // 全景照片中烘焙的太阳位置；照片仅提供云层与天空亮度，太阳本体由物理光源生成。
@@ -174,7 +175,7 @@ float smithG2(float nv, float nl, float a2) {
 float glintLevel(vec2 p, float cell, vec2 across, vec2 along, vec2 w, float lambda, float seed) {
   vec2 g = p / cell;
   vec2 base = floor(g);
-  float sigma = .2 * cell;
+  float sigma = uGlintSoftness * cell;
   vec2 variance = sigma * sigma * vec2(3.6, .22) + w * w * .25;
   // λ 为单元内对准太阳的微面期望个数：λ<1 时单元以概率 λ 点亮；λ≥1 时每个单元都亮，
   // 闪烁起伏按 1/√λ 收敛，远处大单元因此汇成连续光带而不是稀疏亮点。

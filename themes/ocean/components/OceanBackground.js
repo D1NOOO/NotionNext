@@ -37,7 +37,13 @@ export default function OceanBackground() {
               CONFIG
             )}
             speed={
-              Number(siteConfig('OCEAN_ANIMATION_SPEED', 0.5, CONFIG)) || 0
+              Number(
+                siteConfig(
+                  'OCEAN_ANIMATION_SPEED',
+                  CONFIG.OCEAN_ANIMATION_SPEED,
+                  CONFIG
+                )
+              ) || 0
             }
             quality={siteConfig('OCEAN_QUALITY', 'auto', CONFIG)}
             onReady={() => setReady(true)}

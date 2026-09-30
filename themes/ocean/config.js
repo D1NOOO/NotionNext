@@ -3,13 +3,11 @@ const CONFIG = {
   OCEAN_JOURNAL_START: 0.6, // 下潜到此进度时开始展示文章，范围 0.25～0.85
   OCEAN_ANIMATION_ENABLE: true, // WebGL 海洋动画；关闭后使用静态海报
   OCEAN_ANIMATION_PAUSED: false, // 默认暂停海浪
-  OCEAN_ANIMATION_SPEED: 0.5, // 海浪时间倍率
+  OCEAN_ANIMATION_SPEED: 0.45, // 海浪时间倍率
   OCEAN_QUALITY: 'auto', // auto 自动调整分辨率；high 提高画质
   OCEAN_HERO_EYEBROW: 'FEEL THE WORLD SLOW DOWN',
   OCEAN_HERO_TITLE: 'Closer to\nthe ocean.', // 换行用 \n
-  OCEAN_HERO_DESCRIPTION:
-    'A moment of stillness.\nAn endless sense of possibility.',
-  OCEAN_HERO_INVITATION: 'Take a breath. Dive in.',
+  OCEAN_HERO_DESCRIPTION: '', // 留空时保留原有两行占位
   OCEAN_HERO_POSTER: '/themes/ocean/poster.jpg', // 动画加载或不可用时的海报
   OCEAN_SKY_IMAGE: '/themes/ocean/sky-panorama.jpg', // 全景天空贴图
   OCEAN_MENU_ARCHIVE: true,

@@ -29,7 +29,7 @@ function HeroTypography({ title, eyebrow, description }) {
     <>
       <p className='hero__eyebrow'>{eyebrow}</p>
       <div className='hero__title'>{title}</div>
-      <p className='hero__description'>{description}</p>
+      <p className='hero__description'>{description || '\u00a0\n\u00a0'}</p>
     </>
   )
 }
@@ -290,7 +290,13 @@ export default function OceanHero(props) {
               CONFIG
             )}
             speed={
-              Number(siteConfig('OCEAN_ANIMATION_SPEED', 0.5, CONFIG)) || 0
+              Number(
+                siteConfig(
+                  'OCEAN_ANIMATION_SPEED',
+                  CONFIG.OCEAN_ANIMATION_SPEED,
+                  CONFIG
+                )
+              ) || 0
             }
             quality={siteConfig('OCEAN_QUALITY', 'auto', CONFIG)}
           />
@@ -377,19 +383,10 @@ export default function OceanHero(props) {
                     : dive
                 }
               >
-                <span className='action-dive'>
-                  {staticScene ? '阅读文章' : 'Explore the ocean'}
-                </span>
+                <span className='action-dive'>Dive in</span>
                 <span className='action-return'>Return to the surface</span>
                 <Arrow />
               </button>
-              <span className='hero__invitation'>
-                {siteConfig(
-                  'OCEAN_HERO_INVITATION',
-                  CONFIG.OCEAN_HERO_INVITATION,
-                  CONFIG
-                )}
-              </span>
             </div>
           </div>
         </div>

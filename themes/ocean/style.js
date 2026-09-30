@@ -3,6 +3,41 @@ import CONFIG from './config'
 import sceneStyles from './sceneStyles'
 
 const styles = `
+#theme-ocean .ocean-tuner { position:fixed; z-index:40; right:24px; bottom:78px; display:flex; align-items:flex-end; flex-direction:column; gap:10px; color:#f0f8fa; font-size:13px; }
+#theme-ocean .ocean-tuner > section { width:340px; max-width:calc(100vw - 32px); max-height:calc(100svh - 170px); display:flex; flex-direction:column; padding:20px; border:1px solid rgb(204 231 236 / 32%); border-radius:20px; background:rgb(5 28 42 / 96%); box-shadow:0 16px 48px rgb(0 15 25 / 24%); }
+#theme-ocean .ocean-tuner header { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+#theme-ocean .ocean-tuner header small { color:#aac6d2; font-size:9px; letter-spacing:.18em; }
+#theme-ocean .ocean-tuner h2 { font-size:19px; font-weight:500; margin:6px 0 0; }
+#theme-ocean .ocean-tuner button { border:1px solid rgb(204 231 236 / 32%); background:#103545; color:#f0f8fa; border-radius:10px; padding:10px 12px; }
+#theme-ocean .ocean-tuner header button { background:transparent; border:0; font-size:25px; padding:4px 8px; }
+#theme-ocean .ocean-tuner p { font-size:11px; line-height:1.65; color:#bed2dc; margin:12px 0; }
+#theme-ocean .ocean-tuner-scroll { overflow-y:auto; overscroll-behavior:contain; min-height:0; padding:0 4px; margin:0 -4px; scrollbar-width:thin; scrollbar-color:#7297a8 transparent; }
+#theme-ocean .ocean-tuner fieldset { border:0; padding:0; margin:0; min-width:0; }
+#theme-ocean .ocean-tuner fieldset:disabled { opacity:.5; }
+#theme-ocean .ocean-tuner-slider { margin:14px 0; }
+#theme-ocean .ocean-tuner-slider > div { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+#theme-ocean .ocean-tuner-slider output { color:#d4f1ee; font-variant-numeric:tabular-nums; }
+#theme-ocean .ocean-tuner-slider small { font-size:10px; color:#aac6d2; }
+#theme-ocean .ocean-tuner-slider > small { display:block; margin-top:-2px; }
+#theme-ocean .ocean-tuner-slider input { display:block; width:100%; height:28px; margin:4px 0 0; padding:0; cursor:ew-resize; accent-color:#9ed5cf; background:transparent; border:0; }
+#theme-ocean .ocean-tuner-advanced { border-top:1px solid rgb(204 231 236 / 20%); padding-top:12px; }
+#theme-ocean .ocean-tuner-advanced summary { display:flex; align-items:center; justify-content:space-between; cursor:pointer; list-style:none; color:#cce7ec; font-size:12px; }
+#theme-ocean .ocean-tuner-advanced summary::-webkit-details-marker { display:none; }
+#theme-ocean .ocean-tuner-advanced summary svg { transition:transform .2s ease; }
+#theme-ocean .ocean-tuner-advanced[open] summary svg { transform:rotate(180deg); }
+#theme-ocean .ocean-tuner footer { padding-top:14px; border-top:1px solid rgb(204 231 236 / 20%); margin-top:14px; }
+#theme-ocean .ocean-tuner footer > div { display:flex; gap:8px; }
+#theme-ocean .ocean-tuner footer > div button { flex:1; padding:10px 6px; font-size:12px; }
+#theme-ocean .ocean-tuner footer .ocean-tuner-copy { color:#082936; background:#b4dfd7; border-color:#b4dfd7; font-weight:600; }
+#theme-ocean .ocean-tuner footer .ocean-tuner-export { padding:8px 0 0; background:transparent; border:0; font-size:11px; color:#bed2dc; }
+#theme-ocean .ocean-tuner footer p { margin-bottom:0; min-height:18px; }
+#theme-ocean .ocean-tuner button:disabled { cursor:default; opacity:.5; }
+#theme-ocean .ocean-tuner textarea { width:100%; margin-top:12px; border:1px solid rgb(204 231 236 / 32%); border-radius:10px; background:#061e2c; color:#d4f1ee; padding:12px; font:11px/1.6 monospace; user-select:text; resize:vertical; }
+#theme-ocean .ocean-tuner > .ocean-tuner-toggle { display:flex; align-items:center; gap:9px; border-radius:999px; padding:11px 15px; background:#092b3b; }
+@media(max-width:760px) {
+  #theme-ocean .ocean-tuner { right:12px; bottom:78px; }
+  #theme-ocean .ocean-tuner > section { width:320px; max-width:calc(100vw - 24px); max-height:calc(100svh - 154px); padding:16px; }
+}
 #theme-ocean { min-height:100vh; background:var(--ocean-bg); color:var(--ocean-text); font-family:'Avenir Next','Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
 #theme-ocean *, #theme-ocean *::before, #theme-ocean *::after { box-sizing:border-box; }
 #theme-ocean a { color:inherit; text-decoration:none; }

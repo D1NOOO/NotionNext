@@ -27,7 +27,7 @@ NEXT_PUBLIC_THEME=ocean
 - 文章目录随页面正常滚动；二级菜单箭头居中，展开时旋转朝上。Ocean 页面隐藏昼夜切换按钮。
 - 首页列表标题不设背景框；文章页返回按钮位于正文与侧栏的上方，两列顶部对齐。
 - 主按钮下潜或返回海面，左下角按钮暂停或继续动画。页面主体获得焦点时空格键也可切换暂停。
-- 首屏标题和简介来自 Ocean 配置；站点名称、作者、头像、菜单、文章等来自 NotionNext。
+- 导航品牌显示 `Panda's Blog`，不带图标；首屏标题来自 Ocean 配置，简介默认留空并保留两行占位，下潜按钮显示 `Dive in`。作者、头像、菜单、文章等来自 NotionNext。
 - 支持 `customNav`、`CUSTOM_MENU + customMenu` 以及二级菜单。
 - 文章列表遵循全站 `POST_LIST_STYLE` 和 `POSTS_PER_PAGE`。列表封面使用 Notion 文章封面。
 - 文章以单列圆角长条卡片展示，标题和摘要占主体，封面缩为右侧小图；没有封面时文字自动填满卡片。
@@ -42,13 +42,12 @@ NEXT_PUBLIC_THEME=ocean
 | `OCEAN_HERO_ENABLE`       | `true`                           | 显示首页海洋区                           |
 | `OCEAN_ANIMATION_ENABLE`  | `true`                           | 开启实时海洋；关闭后使用静态海报         |
 | `OCEAN_ANIMATION_PAUSED`  | `false`                          | 默认暂停海浪                             |
-| `OCEAN_ANIMATION_SPEED`   | `0.5`                            | 海浪时间倍率                             |
+| `OCEAN_ANIMATION_SPEED`   | `0.45`                           | 海浪时间倍率                             |
 | `OCEAN_JOURNAL_START`     | `0.6`                            | 文章浮现的下潜进度，范围 `0.25–0.85`     |
 | `OCEAN_QUALITY`           | `auto`                           | 自动降分辨率；`high` 提高画质与 GPU 占用 |
 | `OCEAN_HERO_TITLE`        | `Closer to\nthe ocean.`          | 首屏标题，支持实际换行和 `\n`            |
 | `OCEAN_HERO_EYEBROW`      | `FEEL THE WORLD SLOW DOWN`       | 标题上方短句                             |
-| `OCEAN_HERO_DESCRIPTION`  | 原版两行简介                     | 首屏简介                                 |
-| `OCEAN_HERO_INVITATION`   | `Take a breath. Dive in.`        | 主按钮旁的文案                           |
+| `OCEAN_HERO_DESCRIPTION`  | 空                               | 首屏简介；留空保留两行占位               |
 | `OCEAN_HERO_POSTER`       | `/themes/ocean/poster.jpg`       | 首帧、静态模式和 WebGL 不可用时的海报    |
 | `OCEAN_SKY_IMAGE`         | `/themes/ocean/sky-panorama.jpg` | 海洋渲染的全景天空贴图                   |
 | `OCEAN_SIDEBAR`           | `true`                           | 桌面端侧栏                               |
@@ -64,6 +63,12 @@ NEXT_PUBLIC_THEME=ocean
 `OCEAN_MENU_ARCHIVE`、`OCEAN_MENU_CATEGORY`、`OCEAN_MENU_TAG`、`OCEAN_MENU_SEARCH` 控制默认菜单入口。使用 Notion 自定义菜单时以自定义菜单为准。
 
 主题提供主色、页面背景、卡片背景、文字、次级文字、边框六种基础颜色：`OCEAN_COLOR_PRIMARY`、`BG`、`CARD`、`TEXT`、`TEXT_SECONDARY`、`BORDER`；深色模式使用同名配置加 `_DARK`。海洋上的阅读区域采用浅色文字和半透明深海卡片，优先保证可读性；海洋光照保留原版摄影效果。
+
+## 实时波浪调参
+
+调参入口默认隐藏，正常访问使用确认后的默认波场。需要再次调整时，在 Ocean 页面地址中添加 `ocean-tune=1`，例如 `/?theme=ocean&ocean-tune=1`。页面右下角的“波浪调参”可展开滑块面板，分别调整主浪尺度、浪高、波峰陡度、细浪尺度和强度、毛细纹强度。“更多细节参数”包含各层平滑度、反光柔和度与动画速度。拖动时实时预览，暂停状态下也会更新画面。
+
+调参设置只保存在当前浏览器，带 `ocean-tune=1` 打开页面时继续使用；正常访问不读取本地预览设置。“恢复默认参数”清除预览设置并恢复确认后的默认波场。“复制参数”导出当前设置的 JSON，可直接粘贴发送；也可展开参数文本手动复制。调整会合并连续拖动事件，并复用纹理、FFT 缓存与渲染器，不随每次拖动新建海洋场景。
 
 ## 兼容性与性能
 

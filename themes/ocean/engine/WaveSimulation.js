@@ -35,6 +35,7 @@ uniform float uTime;
 uniform float uLength;
 uniform float uGravity;
 uniform float uChoppiness;
+uniform float uAmplitude;
 uniform int uResolution;
 out vec4 fragColor;
 void main() {
@@ -47,7 +48,7 @@ void main() {
   float magnitude = length(k);
   float phase = sqrt(uGravity * magnitude) * uTime;
   float c = cos(phase), s = sin(phase);
-  vec4 h0 = texelFetch(uInitial, pixel, 0);
+  vec4 h0 = texelFetch(uInitial, pixel, 0) * uAmplitude;
   vec2 h = vec2((h0.x + h0.z) * c + (h0.y + h0.w) * s,
                (h0.y - h0.w) * c + (h0.z - h0.x) * s);
   vec2 direction = magnitude > 0.0 ? k / magnitude : vec2(0.0);
@@ -237,7 +238,9 @@ export function createWaveSimulation(renderer, options = {}) {
       gravity: layerGravity
     } = spectrum.parameters
     const initial = new DataTexture(
-      spectrum.initialData,
+      spectrum.parameters.rmsHeight > 0
+        ? spectrum.initialData
+        : createSpectrum({ ...spectrum.parameters, rmsHeight: 1 }).initialData,
       resolution,
       resolution,
       RGBAFormat,
@@ -257,10 +260,12 @@ export function createWaveSimulation(renderer, options = {}) {
       uLength: { value: length },
       uResolution: { value: resolution },
       uGravity: { value: layerGravity },
-      uChoppiness: { value: choppiness }
+      uChoppiness: { value: choppiness },
+      uAmplitude: { value: spectrum.parameters.rmsHeight > 0 ? 1 : 0 }
     })
     return {
       parameters: spectrum.parameters,
+      initialRmsHeight: spectrum.parameters.rmsHeight || 1,
       initial,
       evolution,
       stages: Math.log2(resolution),
@@ -274,7 +279,7 @@ export function createWaveSimulation(renderer, options = {}) {
       )
     }
   })
-  const parameters = Object.freeze({
+  let parameters = Object.freeze({
     algorithm: 'Phillips spectrum / radix-2 GPU inverse FFT',
     gravity,
     long: layers[0].parameters,
@@ -295,6 +300,78 @@ export function createWaveSimulation(renderer, options = {}) {
   let previousTime = null
   const viewport = new Vector4()
   const scissor = new Vector4()
+
+  function setParameters(updates) {
+    if (disposed) throw new Error('Cannot tune a disposed ocean simulation.')
+    const names = ['long', 'detail', 'ripple']
+    const shapeKeys = [
+      'windSpeed',
+      'smallWaveDamping',
+      'maxWavelength',
+      'spreading'
+    ]
+    const allowed = [...shapeKeys, 'rmsHeight', 'choppiness']
+    // Validate and prepare every layer before changing any live texture.
+    const prepared = Object.entries(updates).map(([name, values]) => {
+      const layer = layers[names.indexOf(name)]
+      if (
+        !layer ||
+        !values ||
+        typeof values !== 'object' ||
+        Array.isArray(values)
+      )
+        throw new TypeError(
+          'Wave tuning requires an existing layer and scalar parameters.'
+        )
+      for (const [key, value] of Object.entries(values)) {
+        if (!allowed.includes(key))
+          throw new RangeError(
+            'Wave tuning cannot change the grid or layer layout.'
+          )
+        if (key === 'maxWavelength' && value === null) continue
+        if (
+          !Number.isFinite(value) ||
+          value < 0 ||
+          (['windSpeed', 'maxWavelength', 'spreading'].includes(key) &&
+            value === 0)
+        )
+          throw new RangeError('Wave tuning values must be finite and valid.')
+      }
+      const next = Object.freeze({ ...layer.parameters, ...values })
+      const changed = Object.keys(values).some(
+        key => next[key] !== layer.parameters[key]
+      )
+      const shapeChanged = shapeKeys.some(
+        key => next[key] !== layer.parameters[key]
+      )
+      const spectrum = shapeChanged
+        ? createSpectrum({ ...next, rmsHeight: next.rmsHeight || 1 })
+        : null
+      return { layer, next, changed, spectrum }
+    })
+    if (!prepared.some(item => item.changed)) return false
+    for (const { layer, next, changed, spectrum } of prepared) {
+      if (!changed) continue
+      if (spectrum) {
+        // Preserve the GPU texture and all FFT targets; upload only the new spectrum.
+        layer.initial.image.data = spectrum.initialData
+        layer.initial.needsUpdate = true
+        layer.initialRmsHeight = spectrum.parameters.rmsHeight
+      }
+      layer.parameters = next
+      layer.evolution.uniforms.uAmplitude.value =
+        next.rmsHeight / layer.initialRmsHeight
+      layer.evolution.uniforms.uChoppiness.value = next.choppiness
+    }
+    parameters = Object.freeze({
+      ...parameters,
+      long: layers[0].parameters,
+      detail: layers[1].parameters,
+      ...(layers[2] ? { ripple: layers[2].parameters } : {})
+    })
+    previousTime = null
+    return true
+  }
 
   function draw(shader, target) {
     mesh.material = shader
@@ -371,9 +448,12 @@ export function createWaveSimulation(renderer, options = {}) {
   }
   return {
     update,
+    setParameters,
     texture: layers[0].output.texture,
     detailTexture: layers[1].output.texture,
-    parameters,
+    get parameters() {
+      return parameters
+    },
     dispose,
     ...(layers[2] ? { rippleTexture: layers[2].output.texture } : {})
   }
