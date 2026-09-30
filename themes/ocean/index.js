@@ -179,8 +179,7 @@ const LayoutSlug = props => {
       </PageFrame>
     )
   return (
-    <PageFrame {...props}>
-      <ReturnToList />
+    <PageFrame {...props} beforeContent={<ReturnToList />}>
       <article className='ocean-article ocean-panel'>
         {post.pageCover && (
           <div className='ocean-article-cover'>

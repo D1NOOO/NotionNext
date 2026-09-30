@@ -198,20 +198,18 @@ const styles = `
 @media(max-width:760px) {
   #theme-ocean .ocean-experience .ocean-content-home { padding-top:100px; }
 }
-#theme-ocean.ocean-theme-underwater .ocean-page-heading { width:fit-content; max-width:100%; padding:16px 24px; border:1px solid var(--ocean-border); border-radius:18px; background:var(--ocean-card); backdrop-filter:blur(12px); margin-bottom:24px; }
-#theme-ocean .ocean-experience .ocean-post-card { background:var(--ocean-card); overflow:hidden; backdrop-filter:blur(12px); }
+#theme-ocean.ocean-theme-underwater .ocean-page-heading { width:fit-content; max-width:100%; padding:16px 24px; border:1px solid var(--ocean-border); border-radius:18px; background:var(--ocean-card); margin-bottom:24px; }
+#theme-ocean.ocean-theme-underwater .ocean-content-home .ocean-page-heading { padding:0; border:0; border-radius:0; background:transparent; text-shadow:0 2px 3px rgb(0 17 31 / 95%), 0 0 20px rgb(0 17 31 / 65%); }
+#theme-ocean .ocean-experience .ocean-post-card { background:var(--ocean-card); overflow:hidden; }
 #theme-ocean .ocean-experience .ocean-post-card:hover { border-color:rgb(220 242 247 / 40%); }
-#theme-ocean.ocean-theme-underwater .ocean-panel,
-#theme-ocean.ocean-theme-underwater .ocean-dropdown-items,
-#theme-ocean.ocean-theme-underwater .ocean-mobile-nav { backdrop-filter:blur(16px); }
 #theme-ocean .ocean-experience .ocean-notice { margin-top:36px; }
-#theme-ocean.ocean-theme-underwater .ocean-site-footer { background:var(--ocean-card); backdrop-filter:blur(12px); }
+#theme-ocean.ocean-theme-underwater .ocean-site-footer { background:var(--ocean-card); }
 #theme-ocean .ocean-experience .ocean-site-footer { padding-bottom:120px; }
-#theme-ocean .ocean-experience[data-reading='true'] .ocean-header-scene { background:var(--ocean-card); backdrop-filter:blur(16px); color:var(--ocean-text); }
+#theme-ocean .ocean-experience[data-reading='true'] .ocean-header-scene { background:var(--ocean-card); color:var(--ocean-text); }
 #theme-ocean .ocean-experience[data-reading='true'] .announcement,
 #theme-ocean .ocean-experience[data-reading='true'] .playback { color:var(--ocean-text); }
 #theme-ocean .ocean-experience[data-reading='true'] .announcement { background:var(--ocean-card); }
-#theme-ocean .ocean-experience[data-reading='true'] .playback { padding:8px 14px 8px 8px; border:1px solid var(--ocean-border); border-radius:999px; background:var(--ocean-card); backdrop-filter:blur(12px); }
+#theme-ocean .ocean-experience[data-reading='true'] .playback { padding:8px 14px 8px 8px; border:1px solid var(--ocean-border); border-radius:999px; background:var(--ocean-card); }
 #theme-ocean .ocean-experience[data-reading='true'] .water-aware,
 #theme-ocean .ocean-experience[data-reading='true'] .announcement { transform:none; filter:none; text-shadow:none; }
 #theme-ocean .ocean-experience .scene-loading { position:fixed; }
@@ -230,6 +228,34 @@ const styles = `
 #theme-ocean.ocean-theme-underwater .notion-callout { color:var(--ocean-text); border-color:var(--ocean-border); background:rgb(142 185 209 / 12%); }
 #theme-ocean.ocean-theme-underwater .notion-link { color:#bbdfff; }
 #theme-ocean.ocean-theme-underwater .notion-code { background:#102a3a; color:var(--ocean-text); }
+/* Small, static kernels; no filter animation or permanent compositor promotion.
+   Unsupported browsers keep the stronger original tint for readable text. */
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+  #theme-ocean.ocean-theme-underwater { --ocean-card:rgb(4 26 40 / 76%); --ocean-glass-blur:8px; }
+  #theme-ocean .ocean-experience { --ocean-card:rgb(4 26 40 / 76%); }
+  #theme-ocean.ocean-theme-underwater .ocean-panel,
+  #theme-ocean.ocean-theme-underwater .ocean-post-card,
+  #theme-ocean.ocean-theme-underwater .ocean-page-heading,
+  #theme-ocean.ocean-theme-underwater .ocean-dropdown-items,
+  #theme-ocean.ocean-theme-underwater .ocean-mobile-nav,
+  #theme-ocean.ocean-theme-underwater .ocean-return-list,
+  #theme-ocean.ocean-theme-underwater input,
+  #theme-ocean.ocean-theme-underwater .ocean-site-footer,
+  #theme-ocean.ocean-theme-underwater .ocean-floating-tools > *,
+  #theme-ocean.ocean-theme-underwater > .ocean-header,
+  #theme-ocean .ocean-experience[data-reading='true'] .ocean-header-scene,
+  #theme-ocean .ocean-experience[data-reading='true'] .playback {
+    -webkit-backdrop-filter:blur(var(--ocean-glass-blur));
+    backdrop-filter:blur(var(--ocean-glass-blur));
+  }
+  #theme-ocean.ocean-theme-underwater .ocean-content-home .ocean-page-heading,
+  #theme-ocean.ocean-theme-underwater .ocean-mobile-nav .ocean-dropdown-items {
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+  @media(max-width:760px), (pointer:coarse) {
+    #theme-ocean.ocean-theme-underwater { --ocean-glass-blur:4px; }
+  }
+}
 `
 
 export function Style() {

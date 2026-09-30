@@ -13,6 +13,7 @@ export default function PageFrame({
   eyebrow = 'THE OCEAN JOURNAL',
   home = false,
   immersive = false,
+  beforeContent,
   ...props
 }) {
   const { fullWidth } = useGlobal()
@@ -39,6 +40,7 @@ export default function PageFrame({
           {home ? <h2>{title}</h2> : <h1>{title}</h1>}
         </div>
       )}
+      {beforeContent}
       <div
         className={`ocean-content-grid ${sidebar ? '' : 'ocean-content-wide'}`}
       >
